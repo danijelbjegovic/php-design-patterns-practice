@@ -6,9 +6,6 @@ interface CarService{
 }
 
 
-
-
-
 class BasicInspection implements CarService{
 	public function getCost(){
 		return 25;
@@ -18,9 +15,6 @@ class BasicInspection implements CarService{
 		return 'Basic Inspection';
 	}
 }
-
-
-
 
 
 class OilChange implements CarService{
@@ -58,7 +52,7 @@ class TireRotation implements CarService{
 }
 
 
-$service = new TireRotation(BasicInspection);
+$service = new OilChange(new TireRotation(new BasicInspection));
 
 echo $service->getDescription();
 
