@@ -38,8 +38,15 @@ class DependencyInjector
 		$this->register($service_name, $callable);
 	}
 	
-	
-	
+	public function listServices($string = false)
+	{
+		$keys = array_keys($this->services);
+		if($string){
+			return implode(',', $keys);
+		}
+		return $keys;
+	}
+
 }
 
 $config = [
@@ -90,6 +97,12 @@ $di->email = function() {
 };
 	
 $email = $di->getService('email');	
+	
+print_r($di->listServices());
+echo $di->listServices(true);
+	
+die;
+	
 	
 // this would be called where you need it
 print_r($aws);
