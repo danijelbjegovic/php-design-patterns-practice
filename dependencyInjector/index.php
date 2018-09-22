@@ -28,6 +28,16 @@ class DependencyInjector
 		return $this->services[$service_name]();
 	}
 	
+	public function __get($service_name)
+	{
+		return $this->getService($service_name);
+	}
+	
+	public function __set($service_name, callable $callable)
+	{
+		$this->register($service_name, $callable);
+	}
+	
 	
 	
 }
@@ -56,7 +66,7 @@ $di->register('aws', function() use ($config){
 
 		return $obj;
 	});
-
+	
 $di->register('database', function() use ($config){
 		$obj = new \stdClass();
 		$obj->name = 'database';
@@ -67,15 +77,23 @@ $di->register('database', function() use ($config){
 		return $obj;
 	});
 	
-	
-// this would be called where you need it
 $aws = $di->getService('aws');
 $db = $di->getService('database');
 
-echo PHP_EOL;
-echo $aws->key;
 
-echo PHP_EOL;
-echo $db->user;
 
+	
+$di->email = function() {
+	$obj = new \stdClass();
+	$obj->name = 'email';
+	return $obj;
+};
+	
+$email = $di->getService('email');	
+	
+// this would be called where you need it
+print_r($aws);
 echo PHP_EOL;
+print_r($db);
+echo PHP_EOL;
+print_r($email);
