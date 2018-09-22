@@ -32,18 +32,38 @@ class DependencyInjector
 	
 }
 
+$config = [
+	'aws' => [
+		'key' 		  => '123',
+		'private_key' => 'abc'
+	],
+	'db'  => [
+		'user' 		=> 'danijel',
+		'password' 	=> 'foo'
+	]
+];
+
+
 // This would be defined all in like a services.php file
 $di = new \DependencyInjector();
 
-$di->register('aws', function(){
+$di->register('aws', function() use ($config){
 		$obj = new \stdClass();
 		$obj->name = 'aws';
+
+		$obj->key = $config['aws']['key'];
+		$obj->private_key = $config['aws']['private_key'];
+
 		return $obj;
 	});
 
-$di->register('database', function(){
+$di->register('database', function() use ($config){
 		$obj = new \stdClass();
 		$obj->name = 'database';
+		
+		$obj->user = $config['db']['user'];
+		$obj->password = $config['db']['password'];
+		
 		return $obj;
 	});
 	
@@ -53,9 +73,9 @@ $aws = $di->getService('aws');
 $db = $di->getService('database');
 
 echo PHP_EOL;
-echo $aws->name;
+echo $aws->key;
 
 echo PHP_EOL;
-echo $db->name;
+echo $db->user;
 
 echo PHP_EOL;
